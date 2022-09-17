@@ -35,10 +35,10 @@ int main()
     }
    
    
-    if(year1 == year2 && month1 == month2){
+    if(year1 == year2 && month1 == month2){ //year and month are the same
         days+= (day2 - day1);
     }
-    else if(year1 == year2){
+    else if(year1 == year2){ //same year different months
         for(int i = month1; i<=month2; i++){
             if(i == month1){
                 days+= getMonthDays(month1) - day1;
@@ -49,6 +49,22 @@ int main()
             else{
                 days += getMonthDays(i);
             }
+        }
+        
+    }
+    else if(year1 + 1 == year2){ //year1 is a year before year2
+        days+= getMonthDays(month1) - day1;
+        if(month1 != 12){
+            for(int i = month1 + 1; i <=12; i++){
+                days+= getMonthDays(i);
+            }
+        }
+        
+        days += day2;
+        if(month2 != 1){
+            for(int i = 1; i <= month2 - 1; i++){
+                days += getMonthDays(i);
+            } 
         }
         
     }
