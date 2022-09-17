@@ -46,6 +46,9 @@ int main()
             else if(i == month2){
                 days += day2;
             }
+            else{
+                days += getMonthDays(i);
+            }
         }
         
     }
