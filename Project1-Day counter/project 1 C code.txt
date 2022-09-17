@@ -1,0 +1,214 @@
+/*
+Program Name: Project1_JacobSchnitker.c
+Programmer: Jacob Schnitker
+Class: CS 3335
+Project: 01
+*/
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+bool isLeapYear(int year); //declartion
+int getMonthDays(int month); //declartion
+bool checkInput(int month, int day, int year); //declartion
+
+int main()
+{
+    int days = 0;
+    int month1, day1, year1, month2, day2, year2;
+
+    printf("Enter the first date: ");
+    scanf("%d/%d/%d", &month1, &day1, &year1);
+    if(checkInput(month1, day1, year1) == false){
+        printf("Invalid format, please try again");
+        exit(1);
+    }
+    printf("\nEnter the first date: ");
+    scanf("%d/%d/%d", &month2, &day2, &year2);
+    if(checkInput(month2, day2, year2) == false){
+        printf("Invalid format, please try again");
+        exit(1);
+    }
+   
+    days += abs(year1 - year2) * 365;
+    
+    if(isLeapYear(year1) == true && month1 >= 2){
+        days += 1;
+    }
+    if(isLeapYear(year2) == true && month2 >= 2){
+        days += 1;
+    }
+    
+    
+    int numMonths = abs(month1 - month2);
+    for(int i=0; i<=numMonths; i++){
+        if(i == 0){
+            days += getMonthDays(month1) - day1;
+        }
+        else if(i == numMonths){
+            days += getMonthDays(month2) - (getMonthDays(month2) - day2);
+        }
+        else{
+            days += getMonthDays(i);
+        }
+        
+        
+    }
+    
+    printf("\nNumber of dates between the two dates is: %d", days+1);
+
+    return 0;
+}
+
+bool isLeapYear(int year){
+    bool flag = false;
+    if((year % 4) == 0){
+        if((year % 100) != 0){
+            flag = true;
+            return flag;
+        }
+        else{
+            if((year % 400) == 0){
+                flag = true;
+                return flag;
+            }
+            else{
+                return flag;
+            }
+        }
+    }
+    else{
+        return flag;
+    }
+}
+
+int getMonthDays(int month){
+    switch(month){
+        case 1: return 31;
+                break;
+        case 2: return 28;
+                break;
+        case 3: return 31;
+                break;
+        case 4: return 30;
+                break;
+        case 5: return 31;
+                break;
+        case 6: return 30;
+                break;
+        case 7: return 31;
+                break;
+        case 8: return 31;
+                break;
+        case 9: return 30;
+                break;
+        case 10: return 31;
+                 break;
+        case 11: return 30;
+                 break;   
+        case 12: return 31;
+                 break;
+        
+    }
+}
+    
+bool checkInput(int month, int day, int year){
+    bool flag = true;
+    if(month > 12 || month < 1){  //checks to see if month is valid
+    flag = false;
+        return flag;
+    }
+        
+    if(getMonthDays(month) < day){ //checks to see if the day of the month exists
+        flag = false;
+        return flag;
+    }
+    
+    if(year > 9999 || year < 1000){ //checks to se if year follows the yyyy parameter
+        flag = false;
+        return flag;
+    }
+        
+    return flag;
+}
+
+
+
+Issues:
+
+
+old code:
+
+ days += abs(year1 - year2) * 365; //subtracts the two years first to get the amount of days
+    
+    if(isLeapYear(year1) == true && month1 <= 2){ //these check if both years are a leap year, if they are, add a day 
+        days += 1;
+    }
+    if(isLeapYear(year2) == true && month2 <= 2){
+        days += 1;
+    }
+    
+    // for(int i = year1; i >= year2; i++){
+    //     if(i == year1){
+    //         if(isLeapYear(year1) == true && month1 <= 2){
+    //             days += 1;
+    //         }
+    //     }
+    //     else if(i == year2){
+    //         if(isLeapYear(year2) == true && month2 <= 2){
+    //             days += 1;
+    //         }
+    //     }
+    //     else{
+    //         if(isLeapYear(i) == true){
+    //             days += 1;
+    //         }
+    //     }
+    // }
+    
+    int numMonths = abs(month1 - month2);
+    for(int i=0; i<=numMonths; i++){
+        if(i == 0){
+            days += getMonthDays(month1) - day1; //counts up from the first day
+        }
+        else if(i == numMonths){
+            days += getMonthDays(month2) - (getMonthDays(month2) - day2);
+        }
+        else{
+            days += getMonthDays(i);
+        }
+        
+        
+    }
+
+|||||||||||||||||||||||||||||||||||||||||||||||
+
+days += getMonthDays(month1) - day1;
+    int monthsLeft = 12 - month1;
+    if(monthsLeft == 0){
+        
+    }
+    else{
+        for(int i = 1;i <= monthsLeft; i++){
+            days += getMonthDays(month1 + i);
+        }
+    }
+
+
+    // if(year1 != year2 && year1 + 1 != year2){
+    //     days += abs(year1 - year2) * 365;
+    // }
+    
+    
+    days += day2;
+    int monthsUpTo = month2 - 1;
+    if(monthsUpTo == 0){
+       
+    }
+    else{
+        for(int i = 1;i <= monthsUpTo; i++){
+            days += getMonthDays(month2-i);
+        }
+    }
+
+
+    
