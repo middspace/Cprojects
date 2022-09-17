@@ -1,3 +1,6 @@
+//not working code, just a txt file saving old code
+
+
 /*
 Program Name: Project1_JacobSchnitker.c
 Programmer: Jacob Schnitker
