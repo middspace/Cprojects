@@ -8,7 +8,7 @@ Project: 01
 #include <stdbool.h>
 #include <stdlib.h>
 bool isLeapYear(int year); //declartion
-int getMonthDays(int month); //declartion
+int getMonthDays(int month, int year); //declartion
 bool checkInput(int month, int day, int year); //declartion
 
 int main()
@@ -19,67 +19,67 @@ int main()
     printf("Enter the first date: ");
     scanf("%d/%d/%d", &month1, &day1, &year1);
     if(checkInput(month1, day1, year1) == false){
-        printf("Invalid format, please try again");
+        printf("Invalid format or date doesnt exist, please try again");
         exit(1);
     }
     printf("\nEnter the second date: ");
     scanf("%d/%d/%d", &month2, &day2, &year2);
     if(checkInput(month2, day2, year2) == false){
-        printf("Invalid format, please try again");
+        printf("Invalid format or date doesnt exist, please try again");
         exit(1);
     }
     
-    if(year2 < year1){
+    if((year2 < year1) || ((year1 == year2) && (month2 < month1)) || ((year1 == year2) && (month2 == month1) && (day2 < day1))){
         printf("Please enter the earlier date first");
         exit(1);
     }
    
    
     if(year1 == year2 && month1 == month2){ //year and month are the same
-        days+= (day2 - day1);
+        days+= (day2 - day1); 
+        
     }
     else if(year1 == year2){ //same year different months
         for(int i = month1; i<=month2; i++){
             if(i == month1){
-                days+= getMonthDays(month1) - day1;
+                days+= getMonthDays(month1, year1) - day1;
             }
             else if(i == month2){
                 days += day2;
             }
             else{
-                days += getMonthDays(i);
+                days += getMonthDays(i, year1);
             }
         }
-        
     }
     else if(year1 + 1 == year2){ //year1 is a year before year2
-        days+= getMonthDays(month1) - day1;
+        days+= getMonthDays(month1, year1) - day1;
         if(month1 != 12){
             for(int i = month1 + 1; i <=12; i++){
-                days+= getMonthDays(i);
+                days+= getMonthDays(i, year1);
             }
         }
         
         days += day2;
         if(month2 != 1){
             for(int i = 1; i <= month2 - 1; i++){
-                days += getMonthDays(i);
+                days += getMonthDays(i, year2);
             } 
         }
-        
     }
+        
     else{ //years are more than 1 year apart
-        days+= getMonthDays(month1) - day1;
+        days+= getMonthDays(month1, year1) - day1;
         if(month1 != 12){
             for(int i = month1 + 1; i <=12; i++){
-                days+= getMonthDays(i);
+                days+= getMonthDays(i, year1);
             }
         }
         
         days += day2;
         if(month2 != 1){
             for(int i = 1; i <= month2 - 1; i++){
-                days += getMonthDays(i);
+                days += getMonthDays(i, year2);
             } 
         }
         
@@ -87,6 +87,7 @@ int main()
             days += 365;
         }
     }
+    
     
     printf("\nNumber of dates between the two dates is: %d", days+1);
 
@@ -115,7 +116,10 @@ bool isLeapYear(int year){ //this method checks to see if one of the inputed yea
     }
 }
 
-int getMonthDays(int month){ //this method grabs that amounts days that in each month
+int getMonthDays(int month, int year){ //this method grabs that amounts days that in each month
+    if(isLeapYear(year) == true && month == 2){
+        return 29;
+    }
     switch(month){
         case 1: return 31;
                 break;
@@ -158,11 +162,8 @@ bool checkInput(int month, int day, int year){
         return flag;
     }
     
-    if(isLeapYear(year) == true && month == 2 && day == 29){ //if feb. 29th is entered when the year is a leap year, it is a valid input
-        return flag;
-    }
         
-    if(getMonthDays(month) < day){ //checks to see if the day of the month exists
+    if(getMonthDays(month, year) < day){ //checks to see if the day of the month exists
         flag = false;
         return flag;
     }
