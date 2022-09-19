@@ -18,7 +18,7 @@ int main()
 
     printf("Enter the first date: ");
     scanf("%d/%d/%d", &month1, &day1, &year1);
-    if(checkInput(month1, day1, year1) == false){
+    if(checkInput(month1, day1, year1) == false){  //check to see if the input is valid with a dedicated function
         printf("Invalid format or date doesnt exist, please try again");
         exit(1);
     }
@@ -29,17 +29,17 @@ int main()
         exit(1);
     }
     
-    if((year2 < year1) || ((year1 == year2) && (month2 < month1)) || ((year1 == year2) && (month2 == month1) && (day2 < day1))){
+    if((year2 < year1) || ((year1 == year2) && (month2 < month1)) || ((year1 == year2) && (month2 == month1) && (day2 < day1))){ //ensures the dates entered are consecutive
         printf("Please enter the earlier date first");
         exit(1);
     }
    
    
-    if(year1 == year2 && month1 == month2){ //year and month are the same
+    if(year1 == year2 && month1 == month2){ // case where year and month are the same
         days+= (day2 - day1); 
         
     }
-    else if(year1 == year2){ //same year different months
+    else if(year1 == year2){ //case where its the same year  with different months
         for(int i = month1; i<=month2; i++){
             if(i == month1){
                 days+= getMonthDays(month1, year1) - day1;
@@ -52,15 +52,15 @@ int main()
             }
         }
     }
-    else if(year1 + 1 == year2){ //year1 is a year before year2
-        days+= getMonthDays(month1, year1) - day1;
+    else if(year1 + 1 == year2){ //case where year1 is a year before year2
+        days+= getMonthDays(month1, year1) - day1; //counts the remaining days in month1
         if(month1 != 12){
-            for(int i = month1 + 1; i <=12; i++){
+            for(int i = month1 + 1; i <=12; i++){ 
                 days+= getMonthDays(i, year1);
             }
         }
         
-        days += day2;
+        days += day2; //counts the days up to day2
         if(month2 != 1){
             for(int i = 1; i <= month2 - 1; i++){
                 days += getMonthDays(i, year2);
@@ -68,7 +68,7 @@ int main()
         }
     }
         
-    else{ //years are more than 1 year apart
+    else{ // case where the two years are more than 1 year apart
         days+= getMonthDays(month1, year1) - day1;
         if(month1 != 12){
             for(int i = month1 + 1; i <=12; i++){
@@ -83,8 +83,13 @@ int main()
             } 
         }
         
-        for(int i = year1 + 1; i<year2; i++){
-            days += 365;
+        for(int i = year1 + 1; i<year2; i++){ //counts the years as a whole up to year2
+            if(isLeapYear(i) == true){
+                days += 366
+            }
+            else{
+                days += 365;
+            }
         }
     }
     
@@ -117,7 +122,7 @@ bool isLeapYear(int year){ //this method checks to see if one of the inputed yea
 }
 
 int getMonthDays(int month, int year){ //this method grabs that amounts days that in each month
-    if(isLeapYear(year) == true && month == 2){
+    if(isLeapYear(year) == true && month == 2){ //if the year is a leap year and the month is feburary, return 29 days
         return 29;
     }
     switch(month){
@@ -152,7 +157,7 @@ int getMonthDays(int month, int year){ //this method grabs that amounts days tha
 bool checkInput(int month, int day, int year){
     bool flag = true;
     
-    if(day == 0){
+    if(day == 0){  //day can not be 0
         flag = false;
         return flag;
     }
@@ -176,4 +181,4 @@ bool checkInput(int month, int day, int year){
         
     return flag;
 }
-    
+ 
