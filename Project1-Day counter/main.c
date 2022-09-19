@@ -85,7 +85,7 @@ int main()
         
         for(int i = year1 + 1; i<year2; i++){ //counts the years as a whole up to year2
             if(isLeapYear(i) == true){
-                days += 366
+                days += 366;
             }
             else{
                 days += 365;
